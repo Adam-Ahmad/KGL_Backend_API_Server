@@ -3,6 +3,9 @@ const express = require("express");
 const {
   addUserController,
   userLoginController,
+  getUsersController,
+  deleteUserCotroller,
+  updateUserController,
 } = require("../controllers/users");
 
 const route = express.Router();
@@ -38,7 +41,7 @@ const { authMiddleware } = require("../middlewares/auth");
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-route.post("/addUser", authMiddleware, addUserController);
+route.post("/addUser", addUserController);
 
 /**
  * @swagger
@@ -76,5 +79,9 @@ route.post("/addUser", authMiddleware, addUserController);
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 route.post("/login", userLoginController);
+
+route.get("/getUser", getUsersController);
+route.delete("/deleteUser/:id", deleteUserCotroller);
+route.put("/updateUser/:id", updateUserController);
 
 module.exports = { route };

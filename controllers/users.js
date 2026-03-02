@@ -3,6 +3,45 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { UserModel } = require("../models/users");
 
+const getUsersController = async (req, res) => {
+  try {
+    const users = await UserModel.find();
+    res.status(200).json({ Message: "Users Fetched Successfuly", users });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ Message: "Internal Server Error" });
+  }
+};
+
+const deleteUserCotroller = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await UserModel.findByIdAndDelete(id);
+    if (user) {
+      res.status(200).json({ Message: "User Deleted Successfuly", user });
+    } else {
+      res.status(400).json({ Massage: "User Not Deleted !" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ Message: "Internal Server Error" });
+  }
+};
+
+const updateUserController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await UserModel.findByIdAndUpdate(id, req.body);
+    if (user) {
+      res.status(200).json({ Message: "User Updated Successfuly", user });
+    } else {
+      res.status(400).json({ Massage: "User Not Updated !" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ Message: "Internal Server Error" });
+  }
+};
 /**
  * Add Users Controller is used to add new users
  * @param {Object} req - Request object
@@ -90,4 +129,10 @@ const userLoginController = async (req, res) => {
   }
 };
 
-module.exports = { addUserController, userLoginController };
+module.exports = {
+  addUserController,
+  userLoginController,
+  getUsersController,
+  deleteUserCotroller,
+  updateUserController,
+};
