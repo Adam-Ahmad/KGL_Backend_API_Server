@@ -5,11 +5,9 @@ const {
   userLoginController,
   getUsersController,
   deleteUserCotroller,
-  updateUserController,
 } = require("../controllers/users");
 
 const route = express.Router();
-
 const { authMiddleware } = require("../middlewares/auth");
 
 /**
@@ -42,7 +40,6 @@ const { authMiddleware } = require("../middlewares/auth");
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 route.post("/addUser", addUserController);
-
 /**
  * @swagger
  * /login:
@@ -79,9 +76,7 @@ route.post("/addUser", addUserController);
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 route.post("/login", userLoginController);
-
 route.get("/getUser", getUsersController);
-route.delete("/deleteUser/:id", deleteUserCotroller);
-route.put("/updateUser/:id", updateUserController);
+route.delete("/deleteUser", deleteUserCotroller);
 
 module.exports = { route };

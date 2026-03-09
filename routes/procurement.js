@@ -41,12 +41,7 @@ const { authMiddleware, isManagerMiddleware } = require("../middlewares/auth");
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-route.post(
-  "/addProcurement",
-  authMiddleware,
-  isManagerMiddleware,
-  addProcurementController,
-);
+route.post("/addProcurement", addProcurementController);
 
 /**
  * @swagger
@@ -76,11 +71,6 @@ route.post(
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-route.get(
-  "/getProcurement",
-  authMiddleware,
-  isManagerMiddleware,
-  getProcurementController,
-);
+route.get("/getProcurement", getProcurementController);
 
 module.exports = { route };

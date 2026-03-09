@@ -45,12 +45,7 @@ const {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-route.post(
-  "/addCreditSales",
-  authMiddleware,
-  isSalesAgentMiddleware,
-  addCreditSalesController,
-);
+route.post("/addCreditSales", addCreditSalesController);
 
 /**
  * @swagger
@@ -80,11 +75,6 @@ route.post(
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-route.get(
-  "/getCreditSales",
-  authMiddleware,
-  isManagerMiddleware,
-  getCreditSalesController,
-);
+route.get("/getCreditSales", getCreditSalesController);
 
 module.exports = { route };

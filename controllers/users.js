@@ -6,40 +6,10 @@ const { UserModel } = require("../models/users");
 const getUsersController = async (req, res) => {
   try {
     const users = await UserModel.find();
-    res.status(200).json({ Message: "Users Fetched Successfuly", users });
+    res.status(200).json({ users });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ Message: "Internal Server Error" });
-  }
-};
-
-const deleteUserCotroller = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await UserModel.findByIdAndDelete(id);
-    if (user) {
-      res.status(200).json({ Message: "User Deleted Successfuly", user });
-    } else {
-      res.status(400).json({ Massage: "User Not Deleted !" });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ Message: "Internal Server Error" });
-  }
-};
-
-const updateUserController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await UserModel.findByIdAndUpdate(id, req.body);
-    if (user) {
-      res.status(200).json({ Message: "User Updated Successfuly", user });
-    } else {
-      res.status(400).json({ Massage: "User Not Updated !" });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ Message: "Internal Server Error" });
+    res.status(500);
   }
 };
 /**
@@ -55,7 +25,7 @@ const addUserController = async (req, res) => {
     const { username, email, password, role } = req.body;
 
     // Check if the role is valid
-    if (!["Manager", "SalesAgent"].includes(role)) {
+    if (!["manager", "salesAgent", "director"].includes(role)) {
       return res.status(400).json({ error: "Invalid role" });
     }
 
@@ -77,7 +47,7 @@ const addUserController = async (req, res) => {
     await user.save();
 
     if (user) {
-      res.status(200).json({ Message: "User Added Successfuly", user });
+      res.status(200).json({ user });
     } else {
       res.status(400).json({ Massage: "User Not Added !" });
     }
@@ -86,7 +56,25 @@ const addUserController = async (req, res) => {
     res.status(500).json({ Message: err.message });
   }
 };
-
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+const deleteUserCotroller = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await UserModel.findOneAndDelete(username);
+    if (user) {
+      res.status(200).json({ user });
+    } else {
+      res.status(400).json({ Massage: "User Not Deleted !" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ Message: "Internal Server Error" });
+  }
+};
 /**
  * User Login Controller is used to login users
  * @param {Object} req - Request object
@@ -117,9 +105,7 @@ const userLoginController = async (req, res) => {
       };
       // Generate JWT Token
       const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
-      res
-        .status(200)
-        .json({ Message: "User Logged In Successfuly", token, user });
+      res.status(200).json({ user });
     } else {
       res.status(400).json({ Message: "User Not Found !" });
     }
@@ -134,5 +120,4 @@ module.exports = {
   userLoginController,
   getUsersController,
   deleteUserCotroller,
-  updateUserController,
 };

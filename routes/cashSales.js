@@ -46,12 +46,7 @@ const {
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 
-route.post(
-  "/addCashSales",
-  authMiddleware,
-  isSalesAgentMiddleware,
-  addCashSalesController,
-);
+route.post("/addCashSales", addCashSalesController);
 
 /**
  * @swagger
@@ -69,11 +64,6 @@ route.post(
  *             schema:
  *               $ref: '#/components/schemas/CashSales'
  */
-route.get(
-  "/getCashSales",
-  authMiddleware,
-  isManagerMiddleware,
-  getCashSalesController,
-);
+route.get("/getCashSales", getCashSalesController);
 
 module.exports = { route };

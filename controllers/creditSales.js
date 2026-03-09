@@ -10,14 +10,15 @@ const { CreditSalesModel } = require("../models/creditSales");
 const addCreditSalesController = async (req, res) => {
   try {
     const {
-      buyerName,
+      buyer,
       nationalId,
       location,
       contact,
       amountDueUgx,
-      salesAgentName,
+      salesAgent,
+      branchName,
       dueDate,
-      produceName,
+      produce,
       produceType,
       tonnageKg,
       dispatchDate,
@@ -25,14 +26,15 @@ const addCreditSalesController = async (req, res) => {
 
     // Check if all required fields are provided
     if (
-      !buyerName ||
+      !buyer ||
       !nationalId ||
       !location ||
       !contact ||
       !amountDueUgx ||
-      !salesAgentName ||
+      !salesAgent ||
+      !branchName ||
       !dueDate ||
-      !produceName ||
+      !produce ||
       !produceType ||
       !tonnageKg ||
       !dispatchDate
@@ -42,22 +44,21 @@ const addCreditSalesController = async (req, res) => {
 
     // create new credit sales
     const creditSales = new CreditSalesModel({
-      buyerName,
+      buyer,
       nationalId,
       location,
       contact,
       amountDueUgx,
-      salesAgentName,
+      salesAgent,
+      branchName,
       dueDate,
-      produceName,
+      produce,
       produceType,
       tonnageKg,
       dispatchDate,
     });
     await creditSales.save();
-    res
-      .status(201)
-      .json({ message: "Credit Sales Added Successfuly", creditSales });
+    res.status(201).json({ creditSales });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -75,9 +76,7 @@ const getCreditSalesController = async (req, res) => {
   try {
     // get all credit sales
     const creditSales = await CreditSalesModel.find();
-    res
-      .status(200)
-      .json({ message: "Credit Sales Fetched Successfuly", creditSales });
+    res.status(200).json({ creditSales });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });

@@ -11,45 +11,35 @@ const addCashSalesController = async (req, res) => {
   try {
     const {
       produceName,
-      tonnageKg,
-      amountPaidUgx,
+      tonnageSold,
+      amountPaid,
       buyerName,
       salesAgentName,
+      branch,
       date,
       time,
     } = req.body;
 
-    // Check if all required fields are provided
     if (
       !produceName ||
-      !tonnageKg ||
-      !amountPaidUgx ||
+      !tonnageSold ||
+      !amountPaid ||
       !buyerName ||
       !salesAgentName ||
+      !branch ||
       !date ||
       !time
     ) {
-      res.status(400).json({ Message: "All fields are required" });
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-    // create new cash sales
-    const cashSales = new CashSalesModel({
-      produceName,
-      tonnageKg,
-      amountPaidUgx,
-      buyerName,
-      salesAgentName,
-      date,
-      time,
-    });
-
+    const cashSales = new CashSalesModel(req.body);
     await cashSales.save();
 
-    res
-      .status(201)
-      .json({ Message: "Cash Sales Added Successfully", cashSales });
-  } catch (err) {
-    res.status(500).json({ Message: err.message });
+    res.status(201).json({ cashSales });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -64,9 +54,7 @@ const getCashSalesController = async (req, res) => {
   try {
     // get all cash sales
     const cashSales = await CashSalesModel.find();
-    res
-      .status(200)
-      .json({ Message: "Cash Sales Fetched Successfuly", cashSales });
+    res.status(200).json({ cashSales });
   } catch (error) {
     console.log(error);
     res.status(500).json({ Message: "Internal Server Error" });
